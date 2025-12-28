@@ -16,16 +16,16 @@ pipeline {
         }
 
         stage('Build Docker Image') {
-            steps {
-                sh 'docker build -t demo-app:${BUILD_NUMBER} .'
-            }
+          steps {
+            sh '/usr/local/bin/docker build -t demo-app:${BUILD_NUMBER} .'
+          }
         }
 
         stage('Run Docker Container') {
-            steps {
-                sh 'docker rm -f demo-app || true'
-                sh 'docker run -d -p 8081:8081 --name demo-app demo-app:${BUILD_NUMBER}'
-            }
+          steps {
+            sh '/usr/local/bin/docker rm -f demo-app || true'
+            sh '/usr/local/bin/docker run -d -p 8081:8081 --name demo-app demo-app:${BUILD_NUMBER}'
+          }
         }
-    }
+
 }
