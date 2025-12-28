@@ -27,5 +27,6 @@ pipeline {
             sh '/usr/local/bin/docker run -d -p 8081:8081 --name demo-app demo-app:${BUILD_NUMBER}'
           }
         }
+    }
 
 }
