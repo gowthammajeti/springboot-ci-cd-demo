@@ -2,8 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_BIN = "/usr/local/bin/docker"
-        DOCKER_CONFIG = "${WORKSPACE}/.docker"
+         DOCKER_HOST = "unix:///Users/gowthammajeti/.docker/run/docker.sock"
     }
 
     stages {
@@ -19,6 +18,14 @@ pipeline {
                 sh 'mkdir -p .docker'
                 sh 'echo "{}" > .docker/config.json'
             }
+        }
+
+        stage('Docker Debug') {
+          steps {
+            sh 'whoami'
+            sh 'echo $DOCKER_HOST'
+            sh 'docker ps'
+          }
         }
 
         stage('Build Docker Image') {
