@@ -26,7 +26,7 @@ pipeline {
           steps {
             sh 'whoami'
             sh 'echo $DOCKER_HOST'
-            sh 'docker ps'
+            sh '${DOCKER_BIN} ps'
           }
         }
 
