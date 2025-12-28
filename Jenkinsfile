@@ -3,6 +3,8 @@ pipeline {
 
     environment {
          DOCKER_HOST = "unix:///Users/gowthammajeti/.docker/run/docker.sock"
+          DOCKER_BIN = "/usr/local/bin/docker"
+          DOCKER_CONFIG = "${WORKSPACE}/.docker"
     }
 
     stages {
