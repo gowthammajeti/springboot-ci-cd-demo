@@ -1,13 +1,12 @@
 pipeline {
     agent any
 
-    stages {
+    environment {
+        DOCKER_BIN = "/usr/local/bin/docker"
+        DOCKER_CONFIG = "${WORKSPACE}/.docker"
+    }
 
-        stage('Checkout Code') {
-            steps {
-                checkout scm
-            }
-        }
+    stages {
 
         stage('Build Maven Project') {
             steps {
@@ -15,18 +14,24 @@ pipeline {
             }
         }
 
+        stage('Prepare Docker Config') {
+            steps {
+                sh 'mkdir -p .docker'
+                sh 'echo "{}" > .docker/config.json'
+            }
+        }
+
         stage('Build Docker Image') {
-          steps {
-            sh '/usr/local/bin/docker build -t demo-app:${BUILD_NUMBER} .'
-          }
+            steps {
+                sh '${DOCKER_BIN} build -t demo-app:${BUILD_NUMBER} .'
+            }
         }
 
         stage('Run Docker Container') {
-          steps {
-            sh '/usr/local/bin/docker rm -f demo-app || true'
-            sh '/usr/local/bin/docker run -d -p 8081:8081 --name demo-app demo-app:${BUILD_NUMBER}'
-          }
+            steps {
+                sh '${DOCKER_BIN} rm -f demo-app || true'
+                sh '${DOCKER_BIN} run -d -p 8081:8081 --name demo-app demo-app:${BUILD_NUMBER}'
+            }
         }
     }
-
 }
